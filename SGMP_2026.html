@@ -73,7 +73,14 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative
 .filters{padding:10px 18px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex-shrink:0}
 .filters input,.filters select{padding:6px 10px;font-size:12px;min-width:140px}
 .filters input[type="search"]{min-width:220px}
+.filters .equipo-select{min-width:260px;max-width:340px}
 .filters label{font-size:11px;color:var(--ink-dim);margin-right:-2px}
+
+/* SORT INDICATOR BAR */
+.sort-indicator{display:none;padding:6px 18px;background:rgba(76,201,192,.08);border-bottom:1px solid var(--border);font-size:11px;color:var(--accent);align-items:center;gap:10px;flex-shrink:0}
+.sort-indicator.active{display:flex}
+.sort-indicator button{padding:4px 10px;border-radius:4px;background:var(--panel2);border:1px solid var(--accent);color:var(--accent);font-size:11px}
+.sort-indicator button:hover{background:var(--accent);color:#0e1116}
 
 /* LEGEND */
 .legend{padding:8px 18px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-dim);flex-shrink:0}
@@ -81,10 +88,10 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative
 .legend .swatch{width:22px;height:14px;border-radius:3px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#0e1116;font-family:'JetBrains Mono',monospace}
 
 /* TABLE WRAP */
-.table-wrap{flex:1;overflow:auto;padding:0}
+.table-wrap{flex:1;overflow:auto;padding:0;position:relative}
 table.data{border-collapse:separate;border-spacing:0;width:100%;font-size:12px}
-table.data thead th{background:var(--panel);color:var(--ink-dim);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
-table.data thead tr.row2 th{top:32px;z-index:4}
+table.data thead th{background:var(--panel);color:var(--ink-dim);font-weight:600;text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:.4px;vertical-align:top}
+table.data thead tr.row2 th{top:62px;z-index:4}
 table.data tbody td{padding:7px 10px;border-bottom:1px solid var(--border);white-space:nowrap;vertical-align:middle}
 table.data tbody tr:hover td{background:rgba(76,201,192,.04)}
 table.data td.mono,table.data th.mono{font-family:'JetBrains Mono',monospace;font-size:11px}
@@ -92,6 +99,43 @@ table.data td.center,table.data th.center{text-align:center}
 table.data .col-sticky{position:sticky;left:0;background:var(--bg);z-index:3}
 table.data thead th.col-sticky{background:var(--panel);z-index:6}
 table.data tr.family-row td{background:linear-gradient(90deg,rgba(76,201,192,.08),transparent);color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:11px;padding:10px;border-top:1px solid var(--border)}
+
+/* COLUMN FILTERS */
+.th-content{display:flex;flex-direction:column;gap:4px;min-width:60px}
+.th-row{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.th-title{flex:1;text-align:left}
+.th-title.is-center{text-align:center}
+.th-filter-btn{padding:0 4px;color:var(--ink-dim);font-size:11px;line-height:1;border-radius:3px;background:none;border:none;cursor:pointer}
+.th-filter-btn:hover{color:var(--accent);background:var(--panel2)}
+.th-filter-btn.active{color:var(--accent)}
+th.has-filter{border-bottom:2px solid var(--accent) !important}
+.th-quick{width:100%;padding:3px 6px;font-size:10px;background:var(--panel2);border:1px solid var(--border);border-radius:3px;color:var(--ink);text-transform:none;letter-spacing:normal;font-weight:400}
+.th-quick:focus{border-color:var(--accent)}
+
+/* FILTER POPOVER */
+.fpop-backdrop{position:fixed;inset:0;z-index:90;display:none}
+.fpop-backdrop.active{display:block}
+.fpop{position:absolute;background:var(--panel);border:1px solid var(--border);border-radius:8px;width:260px;padding:10px;box-shadow:0 12px 32px rgba(0,0,0,.5);z-index:91;display:none;flex-direction:column;gap:8px}
+.fpop.active{display:flex}
+.fpop .sort-row{display:flex;gap:6px}
+.fpop .sort-row button{flex:1;padding:6px 8px;background:var(--panel2);border:1px solid var(--border);border-radius:5px;font-size:11px;color:var(--ink)}
+.fpop .sort-row button:hover{border-color:var(--accent);color:var(--accent)}
+.fpop .sort-row button.active{background:var(--accent);color:#0e1116;border-color:var(--accent)}
+.fpop .divider{height:1px;background:var(--border);margin:2px 0}
+.fpop .fpop-search{padding:5px 8px;font-size:11px}
+.fpop .quick-acts{display:flex;gap:6px;font-size:10px}
+.fpop .quick-acts button{flex:1;padding:4px;color:var(--info);background:none;border:none;text-decoration:underline;cursor:pointer;font-size:11px}
+.fpop .quick-acts button:hover{color:var(--accent)}
+.fpop .values-list{max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;padding-right:4px}
+.fpop .val-item{display:flex;align-items:center;gap:6px;padding:3px 4px;cursor:pointer;border-radius:3px;font-size:12px}
+.fpop .val-item:hover{background:var(--panel2)}
+.fpop .val-item input{width:auto;min-width:0;margin:0;padding:0}
+.fpop .val-item .label{flex:1;color:var(--ink);text-transform:none;letter-spacing:normal;font-weight:400;font-size:12px}
+.fpop .val-item .count{color:var(--ink-dim);font-size:10px;font-family:'JetBrains Mono',monospace}
+.fpop .fpop-foot{display:flex;gap:6px;justify-content:flex-end;padding-top:6px;border-top:1px solid var(--border)}
+.fpop .fpop-foot button{padding:5px 12px;border-radius:5px;font-size:11px;border:1px solid var(--border);background:var(--panel2);color:var(--ink)}
+.fpop .fpop-foot button.primary{background:var(--accent);color:#0e1116;border-color:var(--accent);font-weight:600}
+.fpop .fpop-foot button.primary:hover{background:#5cd9d0}
 
 /* CODE CELLS */
 .code-cell{display:inline-block;min-width:30px;padding:3px 8px;border-radius:4px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;color:#0e1116;cursor:pointer;user-select:none}
@@ -285,6 +329,7 @@ table.pendientes .titulo-cell .equipo{font-size:10px;color:var(--ink-dim);font-f
 <section class="view active" id="view-pmp">
   <div class="filters">
     <input type="search" id="fPmpQ" placeholder="Buscar equipo, inventario, serie, ubicación...">
+    <select id="fPmpEquipo" class="equipo-select"><option value="">— Todos los equipos —</option></select>
     <select id="fPmpFamilia"><option value="">Todas las familias</option></select>
     <select id="fPmpMes"><option value="">Todos los meses</option></select>
     <select id="fPmpCodigo"><option value="">Todos los códigos</option><option>X</option><option>R</option><option>RA</option><option>PM</option></select>
@@ -292,6 +337,10 @@ table.pendientes .titulo-cell .equipo{font-size:10px;color:var(--ink-dim);font-f
       <option>Operativo</option><option>No operativo</option><option>En servicio técnico</option>
       <option>En préstamo</option><option>Fuera de servicio</option><option>Baja</option>
     </select>
+  </div>
+  <div class="sort-indicator" id="pmpSortIndicator">
+    <span id="pmpSortLabel"></span>
+    <button onclick="clearSort('pmp')">Restaurar orden original</button>
   </div>
   <div class="legend">
     <span class="chip"><span class="swatch code-X">X</span> Programada</span>
@@ -309,8 +358,13 @@ table.pendientes .titulo-cell .equipo{font-size:10px;color:var(--ink-dim);font-f
 <section class="view" id="view-registro">
   <div class="filters">
     <input type="search" id="fRegQ" placeholder="Buscar equipo, inventario, ubicación...">
+    <select id="fRegEquipo" class="equipo-select"><option value="">— Todos los equipos —</option></select>
     <select id="fRegFamilia"><option value="">Todas las familias</option></select>
     <select id="fRegMes"><option value="">Todos los meses</option></select>
+  </div>
+  <div class="sort-indicator" id="regSortIndicator">
+    <span id="regSortLabel"></span>
+    <button onclick="clearSort('reg')">Restaurar orden original</button>
   </div>
   <div class="legend">
     <span class="chip"><span class="result-cell result-Si">Si</span> Realizada</span>
@@ -387,6 +441,26 @@ table.pendientes .titulo-cell .equipo{font-size:10px;color:var(--ink-dim);font-f
 </section>
 
 </main>
+
+<!-- COLUMN FILTER POPOVER -->
+<div class="fpop-backdrop" id="fpopBackdrop"></div>
+<div class="fpop" id="fpop">
+  <div class="sort-row">
+    <button id="fpopSortAsc">↑ A→Z</button>
+    <button id="fpopSortDesc">↓ Z→A</button>
+  </div>
+  <div class="divider"></div>
+  <input type="search" id="fpopSearch" class="fpop-search" placeholder="Buscar en la lista...">
+  <div class="quick-acts">
+    <button id="fpopSelAll">(Seleccionar todo)</button>
+    <button id="fpopClear">(Limpiar)</button>
+  </div>
+  <div class="values-list" id="fpopValues"></div>
+  <div class="fpop-foot">
+    <button id="fpopCancel">Cancelar</button>
+    <button id="fpopAccept" class="primary">Aceptar</button>
+  </div>
+</div>
 
 <!-- MODAL: EDIT CELL (PMP) -->
 <div class="modal-backdrop" id="modalEditCell">
@@ -694,7 +768,9 @@ table.pendientes .titulo-cell .equipo{font-size:10px;color:var(--ink-dim);font-f
 const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MESES_FULL = {Ene:'Enero',Feb:'Febrero',Mar:'Marzo',Abr:'Abril',May:'Mayo',Jun:'Junio',Jul:'Julio',Ago:'Agosto',Sep:'Septiembre',Oct:'Octubre',Nov:'Noviembre',Dic:'Diciembre'};
 const FAMILIAS = ['Monitores','Ventiladores','Desfibriladores','M Anestesia','Incubadoras','M Diálisis'];
-const COL_BASE = ['ID','N° Carpeta','N° Inventario','Equipo','Servicio','Unidad','Ubicación','Procedencia','Marca','Modelo','Serie','Año de Instalación','Vida Útil Residual','Clasificación','ENU/Baja','Observación','Frecuencia MP','Responsable MP'];
+/* COL_BASE excluye Observación y Responsable MP por diseño */
+const COL_BASE = ['ID','N° Carpeta','N° Inventario','Equipo','Servicio','Unidad','Ubicación','Procedencia','Marca','Modelo','Serie','Año de Instalación','Vida Útil Residual','Clasificación','ENU/Baja','Frecuencia MP'];
+const COL_IGNORE = [/^Observaci/i, /^Responsable/i];
 const EJECUTORES = [
   'Carlos Bahamondes Seguel','Cristián Beltrán Oviedo','Cristina Rozas Urrutia',
   'Daniel Díaz Neira','Ignacio Berner Bergara','Macarena Toledo','Marco Ulloa',
@@ -710,7 +786,10 @@ const state = {
   registro: [],
   events: [],
   pendientes: [],
-  editing: { evIdx:null, penIdx:null, cell:null, reg:null, est:null }
+  asignacionesMensuales: {},
+  editing: { evIdx:null, penIdx:null, cell:null, reg:null, est:null },
+  tableFilters: { pmp:{}, reg:{} },
+  tableSort: { pmp:null, reg:null }
 };
 
 /* ============================================================
@@ -774,6 +853,11 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+function debounce(fn, ms){
+  let t;
+  return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
+}
+
 /* ============================================================
    AUTOSAVE
    ============================================================ */
@@ -791,7 +875,8 @@ function doAutosave(){
       pmp: state.pmp,
       registro: state.registro,
       events: state.events,
-      pendientes: state.pendientes
+      pendientes: state.pendientes,
+      asignacionesMensuales: state.asignacionesMensuales
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(snap));
   }catch(e){
@@ -811,6 +896,7 @@ function tryLoadAutosave(){
       state.registro = snap.registro || [];
       state.events = snap.events || [];
       state.pendientes = snap.pendientes || [];
+      state.asignacionesMensuales = snap.asignacionesMensuales || {};
       return true;
     }
   }catch(e){ console.warn('Restauración fallida:', e); }
@@ -865,7 +951,8 @@ function importWorkbook(wb, fileName){
   state.fileName = fileName;
   const sheetNames = wb.SheetNames;
   const pmpName = sheetNames.find(n=>/PMP[_ ]?2026/i.test(n)) || sheetNames[0];
-  const regName = sheetNames.find(n=>/Registro/i.test(n));
+  const regName = sheetNames.find(n=>/Registro[_ -]?MP[_ -]?2026/i.test(n))
+                  || sheetNames.find(n=>/Registro/i.test(n));
 
   const pmpSheet = wb.Sheets[pmpName];
   state.pmp = parsePMP(pmpSheet);
@@ -877,12 +964,29 @@ function importWorkbook(wb, fileName){
     state.registro = mirrorRegistroFromPMP(state.pmp);
   }
 
+  // Vinculación 1:1: crear filas espejo en registro para equipos faltantes
+  reconcileRegistroWithPMP();
+
+  // Reset filtros y orden
+  state.tableFilters = { pmp:{}, reg:{} };
+  state.tableSort = { pmp:null, reg:null };
+
   populateSelectors();
   updateStatus();
+  updateSortIndicator('pmp'); updateSortIndicator('reg');
   renderPMP();
   renderRegistro();
-  toast(`Cargado: ${state.pmp.filter(r=>!r.isHeader).length} equipos`, 'ok');
+
+  const pmpCount = state.pmp.filter(r=>!r.isHeader).length;
+  const regCount = state.registro.filter(r=>!r.isHeader).length;
+  console.info(`[Parser] PMP: ${pmpCount} equipos, Registro: ${regCount} equipos`);
+  toast(`Cargado: ${pmpCount} equipos`, 'ok');
   scheduleAutosave();
+}
+
+function isIgnoredCol(name){
+  const s = String(name||'').trim();
+  return COL_IGNORE.some(re=>re.test(s));
 }
 
 function findHeaderRow(rows){
@@ -947,47 +1051,62 @@ function lastFamilia(arr){
 
 function parseRegistro(sheet){
   const rows = XLSX.utils.sheet_to_json(sheet, {header:1, defval:''});
-  // Find row with at least 4 cells being exactly P or R
-  let h2 = -1;
-  for(let i=0;i<Math.min(20, rows.length);i++){
-    const r = rows[i].map(c=>String(c||'').trim());
-    const prCount = r.filter(c=>c==='P'||c==='R').length;
-    if(prCount>=4){ h2 = i; break; }
-  }
-  if(h2<0){ console.warn('No se encontró doble cabecera en Registro, generando espejo'); return mirrorRegistroFromPMP(state.pmp); }
-  const h1Row = rows[h2-1] || [];
-  const h2Row = rows[h2];
 
+  // 1) Find header row containing month name (e.g. /^Ene/i)
+  let headerMesIdx = -1;
+  for(let i=0;i<Math.min(15, rows.length);i++){
+    const r = rows[i].map(c=>String(c||'').trim());
+    if(r.some(c=>/^Ene/i.test(c))){ headerMesIdx = i; break; }
+  }
+  if(headerMesIdx<0){ console.warn('No se encontró cabecera de meses en Registro'); return []; }
+
+  // 2) Find P/R row in next 5 rows
+  let headerPRIdx = -1;
+  for(let i=headerMesIdx;i<Math.min(headerMesIdx+6, rows.length);i++){
+    const r = rows[i].map(c=>String(c||'').trim().toUpperCase());
+    const prCount = r.filter(c=>c==='P'||c==='R').length;
+    if(prCount>=4){ headerPRIdx = i; break; }
+  }
+  if(headerPRIdx<0){ console.warn('No se encontró doble cabecera P/R en Registro'); return []; }
+
+  // 3) Build month-to-column map by propagating current month forward
+  const h1Row = rows[headerMesIdx];
+  const h2Row = rows[headerPRIdx];
+  const colIdx = {};
+  let currentMes = null;
+  const mesMatch = (s)=>{
+    const v = String(s||'').trim();
+    for(const m of MESES){ if(v.toLowerCase().startsWith(m.toLowerCase())) return m; }
+    return null;
+  };
+  for(let c=0;c<h1Row.length;c++){
+    const m = mesMatch(h1Row[c]);
+    if(m) currentMes = m;
+    const pr = String(h2Row[c]||'').trim().toUpperCase();
+    if(currentMes && (pr==='P' || pr==='R')){
+      colIdx[currentMes+'_'+pr] = c;
+    }
+  }
+
+  // 4) Map base columns from row above headerMes (or from headerMes itself if base names are inline)
+  // The base column names are usually in the same row as the month names (headerMesIdx) on left columns.
   const baseIdx = {};
   for(const col of COL_BASE){
     let i = h1Row.findIndex(h=>String(h||'').trim()===col);
     if(i<0) i = h1Row.findIndex(h=>String(h||'').trim().toLowerCase()===col.toLowerCase());
     if(i<0) i = h1Row.findIndex(h=>String(h||'').trim().toLowerCase().startsWith(col.toLowerCase().slice(0,8)));
+    // also try a row before
+    if(i<0 && headerMesIdx>0){
+      const prevRow = rows[headerMesIdx-1];
+      i = prevRow.findIndex(h=>String(h||'').trim().toLowerCase()===col.toLowerCase());
+      if(i<0) i = prevRow.findIndex(h=>String(h||'').trim().toLowerCase().startsWith(col.toLowerCase().slice(0,8)));
+    }
     baseIdx[col] = i;
   }
 
-  const mesPRIdx = {};
-  for(const m of MESES){
-    let firstMesCol = -1;
-    for(let j=0;j<h1Row.length;j++){
-      if(String(h1Row[j]||'').toLowerCase().startsWith(m.toLowerCase())){ firstMesCol = j; break; }
-    }
-    if(firstMesCol<0){
-      mesPRIdx[m] = {P:-1, R:-1};
-      continue;
-    }
-    // P y R están en h2Row a partir de firstMesCol
-    let pIdx=-1, rIdx=-1;
-    for(let k=firstMesCol;k<firstMesCol+3 && k<h2Row.length;k++){
-      const v = String(h2Row[k]||'').trim();
-      if(v==='P' && pIdx<0) pIdx=k;
-      else if(v==='R' && rIdx<0) rIdx=k;
-    }
-    mesPRIdx[m] = {P:pIdx, R:rIdx};
-  }
-
+  // 5) Data rows
   const out = [];
-  for(let i=h2+1;i<rows.length;i++){
+  for(let i=headerPRIdx+1;i<rows.length;i++){
     const r = rows[i];
     if(!r || r.every(c=>String(c||'').trim()==='')) continue;
     const first = String(r[0]||'').trim();
@@ -1003,10 +1122,11 @@ function parseRegistro(sheet){
     }
     rec.meses = {};
     for(const m of MESES){
-      const {P, R} = mesPRIdx[m];
+      const pCol = colIdx[m+'_P'];
+      const rCol = colIdx[m+'_R'];
       rec.meses[m] = {
-        P: P>=0 ? String(r[P]||'').trim().toUpperCase() : '',
-        R: R>=0 ? String(r[R]||'').trim() : ''
+        P: pCol!==undefined ? String(r[pCol]||'').trim().toUpperCase() : '',
+        R: rCol!==undefined ? String(r[rCol]||'').trim() : ''
       };
     }
     rec.familia = lastFamilia(out);
@@ -1026,6 +1146,47 @@ function mirrorRegistroFromPMP(pmp){
   });
 }
 
+function reconcileRegistroWithPMP(){
+  // For each equipo in pmp not in registro, append a mirror row at the end (by familia).
+  const regInvSet = new Set(state.registro.filter(r=>!r.isHeader && r['N° Inventario']).map(r=>r['N° Inventario']));
+  const huérfanas = [];
+  // Also check: for each registro row, ensure equipo exists in pmp; if not, mark huérfana
+  for(const r of state.registro){
+    if(r.isHeader) continue;
+    const inv = r['N° Inventario'];
+    if(!inv){ continue; }
+    const inPmp = state.pmp.find(p=>!p.isHeader && p['N° Inventario']===inv);
+    if(!inPmp) huérfanas.push(inv);
+  }
+  if(huérfanas.length) console.warn('[Parser] Filas de Registro sin equivalente en PMP:', huérfanas);
+
+  // Add mirror rows for pmp equipos missing in registro, grouped by familia
+  const byFam = {};
+  for(const r of state.pmp){
+    if(r.isHeader || !r['N° Inventario']) continue;
+    if(regInvSet.has(r['N° Inventario'])) continue;
+    const fam = r.familia || 'Sin familia';
+    if(!byFam[fam]) byFam[fam] = [];
+    byFam[fam].push(r);
+  }
+  let added = 0;
+  for(const fam of Object.keys(byFam)){
+    let hasFamHeader = state.registro.some(x=>x.isHeader && x.familia===fam);
+    if(!hasFamHeader){
+      state.registro.push({isHeader:true, familia:fam});
+    }
+    for(const r of byFam[fam]){
+      const rec = {isHeader:false, familia:fam};
+      for(const col of COL_BASE) rec[col] = r[col]||'';
+      rec.meses = {};
+      for(const m of MESES) rec.meses[m] = { P: r.meses[m]||'', R: '' };
+      state.registro.push(rec);
+      added++;
+    }
+  }
+  if(added>0) console.info(`[Parser] Espejo creado para ${added} equipos faltantes en Registro`);
+}
+
 function populateSelectors(){
   // Familias
   const fams = [...new Set(state.pmp.filter(r=>r.isHeader).map(r=>r.familia))];
@@ -1037,6 +1198,25 @@ function populateSelectors(){
   for(const sel of ['#fPmpMes','#fRegMes']){
     const s = $(sel);
     s.innerHTML = '<option value="">Todos los meses</option>' + MESES.map(m=>`<option value="${m}">${MESES_FULL[m]}</option>`).join('');
+  }
+  // Selectores de equipo agrupados por familia
+  for(const selId of ['#fPmpEquipo','#fRegEquipo']){
+    const s = $(selId);
+    s.innerHTML = '<option value="">— Todos los equipos —</option>';
+    const byFam = {};
+    for(const r of state.pmp){
+      if(r.isHeader || !r['N° Inventario']) continue;
+      const fam = r.familia || 'Sin familia';
+      if(!byFam[fam]) byFam[fam] = [];
+      byFam[fam].push(r);
+    }
+    for(const fam of Object.keys(byFam)){
+      const og = el('optgroup', {label:fam});
+      for(const r of byFam[fam]){
+        og.appendChild(el('option', {value:r['N° Inventario']}, `[${r['N° Inventario']}] — ${r.Equipo}`));
+      }
+      s.appendChild(og);
+    }
   }
   // Datalist inventarios
   const dl = $('#dlInventarios');
@@ -1074,7 +1254,6 @@ function getEstadoEquipo(invNum){
   if(!eq) return {estado:'Operativo', override:false};
   if(eq._estadoOverride) return {estado:eq._estadoOverride.estado, override:true, motivo:eq._estadoOverride.motivo, fecha:eq._estadoOverride.fecha};
 
-  // procesar eventos del equipo
   const evts = state.events.filter(e=>e.inv===invNum).slice().sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
   let estado = null;
   for(const e of evts){
@@ -1092,7 +1271,6 @@ function getEstadoEquipo(invNum){
   }
   if(estado) return {estado, override:false};
 
-  // derivar del registro
   const reg = state.registro.find(r=>!r.isHeader && r['N° Inventario']===invNum);
   if(reg){
     for(const m of MESES){
@@ -1125,6 +1303,280 @@ function estadoBadge(invNum){
 }
 
 /* ============================================================
+   FILTROS TIPO EXCEL EN ENCABEZADOS
+   ============================================================ */
+function getRowValue(row, colKey){
+  if(!row) return '';
+  if(colKey==='__estado__'){
+    return getEstadoEquipo(row['N° Inventario']).estado;
+  }
+  // month for PMP: 'mes:Ene', for Reg: 'reg:Ene:P' or 'reg:Ene:R'
+  if(colKey.startsWith('mes:')){
+    const m = colKey.slice(4);
+    return row.meses?.[m] || '';
+  }
+  if(colKey.startsWith('reg:')){
+    const [,m,which] = colKey.split(':');
+    return (row.meses?.[m]||{})[which] || '';
+  }
+  return row[colKey] || '';
+}
+
+function getUniqueValues(viewKey, colKey){
+  const src = viewKey==='pmp' ? state.pmp : state.registro;
+  const set = new Map();
+  for(const r of src){
+    if(r.isHeader) continue;
+    const v = getRowValue(r, colKey);
+    const key = v===''||v===null||v===undefined ? '__EMPTY__' : String(v);
+    set.set(key, (set.get(key)||0)+1);
+  }
+  const arr = Array.from(set.entries());
+  // sort: non-empty first alphabetically, empty last
+  arr.sort((a,b)=>{
+    if(a[0]==='__EMPTY__') return 1;
+    if(b[0]==='__EMPTY__') return -1;
+    return a[0].localeCompare(b[0], 'es', {numeric:true});
+  });
+  return arr;
+}
+
+function colFilterState(viewKey, colKey){
+  const f = state.tableFilters[viewKey];
+  if(!f[colKey]) f[colKey] = { quickText:'', selectedValues:null };
+  return f[colKey];
+}
+
+function isFilterActive(viewKey, colKey){
+  const f = state.tableFilters[viewKey][colKey];
+  return !!(f && (f.quickText || f.selectedValues));
+}
+
+function buildFilterHeader(viewKey, colKey, label, opts={}){
+  const isCenter = !!opts.center;
+  const isSticky = !!opts.sticky;
+  const isMono = !!opts.mono;
+  const rowspan = opts.rowspan || 1;
+  const colspan = opts.colspan || 1;
+  const active = isFilterActive(viewKey, colKey);
+  const thAttrs = {
+    class: (isCenter?'center ':'')+(isSticky?'col-sticky ':'')+(isMono?'mono ':'')+(active?'has-filter':''),
+    dataset: {col: colKey, view: viewKey}
+  };
+  if(rowspan>1) thAttrs.rowspan = rowspan;
+  if(colspan>1) thAttrs.colspan = colspan;
+  const th = el('th', thAttrs);
+  const content = el('div', {class:'th-content'});
+  const row = el('div', {class:'th-row'});
+  row.appendChild(el('span', {class:'th-title'+(isCenter?' is-center':'')}, label));
+  const btn = el('button', {class:'th-filter-btn'+(active?' active':''), title:'Filtros y orden', onclick:(e)=>{ e.stopPropagation(); openFilterPopover(viewKey, colKey, th); }}, '▾');
+  row.appendChild(btn);
+  content.appendChild(row);
+
+  const quick = el('input', {class:'th-quick', type:'text', placeholder:'🔍', value: colFilterState(viewKey,colKey).quickText});
+  quick.addEventListener('click', e=>e.stopPropagation());
+  quick.addEventListener('input', debounce((e)=>{
+    colFilterState(viewKey, colKey).quickText = e.target.value;
+    if(viewKey==='pmp') renderPMP(); else renderRegistro();
+  }, 150));
+  content.appendChild(quick);
+
+  th.appendChild(content);
+  return th;
+}
+
+let _fpopCtx = null;
+function openFilterPopover(viewKey, colKey, anchor){
+  closeFilterPopover();
+  _fpopCtx = { viewKey, colKey, tempSelected:null };
+  const fpop = $('#fpop');
+  const bd = $('#fpopBackdrop');
+
+  const cs = colFilterState(viewKey, colKey);
+  const allValues = getUniqueValues(viewKey, colKey);
+  // Initialize tempSelected: if selectedValues is null, all selected; else copy
+  _fpopCtx.allValues = allValues;
+  _fpopCtx.tempSelected = new Set(cs.selectedValues===null ? allValues.map(v=>v[0]) : Array.from(cs.selectedValues));
+
+  // sort state
+  const sortObj = state.tableSort[viewKey];
+  $('#fpopSortAsc').classList.toggle('active', sortObj && sortObj.col===colKey && sortObj.dir==='asc');
+  $('#fpopSortDesc').classList.toggle('active', sortObj && sortObj.col===colKey && sortObj.dir==='desc');
+
+  $('#fpopSearch').value = '';
+  renderFpopValues('');
+
+  // position
+  const rect = anchor.getBoundingClientRect();
+  fpop.style.top = (rect.bottom + 4) + 'px';
+  fpop.style.left = Math.min(rect.left, window.innerWidth - 280) + 'px';
+
+  bd.classList.add('active');
+  fpop.classList.add('active');
+}
+
+function closeFilterPopover(){
+  $('#fpop').classList.remove('active');
+  $('#fpopBackdrop').classList.remove('active');
+  _fpopCtx = null;
+}
+
+function renderFpopValues(filterText){
+  const ctx = _fpopCtx;
+  if(!ctx) return;
+  const list = $('#fpopValues');
+  list.innerHTML = '';
+  const ft = (filterText||'').toLowerCase();
+  for(const [val, count] of ctx.allValues){
+    const label = val==='__EMPTY__' ? '(Vacíos)' : val;
+    if(ft && !label.toLowerCase().includes(ft)) continue;
+    const checked = ctx.tempSelected.has(val);
+    const item = el('div', {class:'val-item', onclick:(e)=>{
+      if(e.target.tagName!=='INPUT'){
+        const cb = item.querySelector('input');
+        cb.checked = !cb.checked;
+        cb.dispatchEvent(new Event('change'));
+      }
+    }});
+    const cb = el('input', {type:'checkbox'});
+    cb.checked = checked;
+    cb.addEventListener('change', ()=>{
+      if(cb.checked) ctx.tempSelected.add(val);
+      else ctx.tempSelected.delete(val);
+    });
+    item.appendChild(cb);
+    item.appendChild(el('span', {class:'label'}, label));
+    item.appendChild(el('span', {class:'count'}, '('+count+')'));
+    list.appendChild(item);
+  }
+}
+
+$('#fpopBackdrop').addEventListener('click', closeFilterPopover);
+$('#fpopSearch').addEventListener('input', e=>renderFpopValues(e.target.value));
+$('#fpopSelAll').addEventListener('click', ()=>{
+  _fpopCtx.allValues.forEach(([v])=>_fpopCtx.tempSelected.add(v));
+  renderFpopValues($('#fpopSearch').value);
+});
+$('#fpopClear').addEventListener('click', ()=>{
+  _fpopCtx.tempSelected.clear();
+  renderFpopValues($('#fpopSearch').value);
+});
+$('#fpopSortAsc').addEventListener('click', ()=>{
+  state.tableSort[_fpopCtx.viewKey] = {col:_fpopCtx.colKey, dir:'asc'};
+  closeFilterPopover();
+  updateSortIndicator(_fpopCtx?.viewKey);
+  if(_fpopCtx?.viewKey==='pmp') renderPMP(); else renderRegistro();
+});
+$('#fpopSortDesc').addEventListener('click', ()=>{
+  state.tableSort[_fpopCtx.viewKey] = {col:_fpopCtx.colKey, dir:'desc'};
+  closeFilterPopover();
+  updateSortIndicator(_fpopCtx?.viewKey);
+  if(_fpopCtx?.viewKey==='pmp') renderPMP(); else renderRegistro();
+});
+$('#fpopAccept').addEventListener('click', ()=>{
+  const ctx = _fpopCtx;
+  const cs = colFilterState(ctx.viewKey, ctx.colKey);
+  // If all are selected → set to null (no filter)
+  if(ctx.tempSelected.size === ctx.allValues.length) cs.selectedValues = null;
+  else cs.selectedValues = new Set(ctx.tempSelected);
+  if(cs.selectedValues && cs.selectedValues.size===0){
+    // Empty set: nothing passes — keep it as explicit
+  }
+  closeFilterPopover();
+  if(ctx.viewKey==='pmp') renderPMP(); else renderRegistro();
+});
+$('#fpopCancel').addEventListener('click', closeFilterPopover);
+
+function clearSort(viewKey){
+  state.tableSort[viewKey] = null;
+  updateSortIndicator(viewKey);
+  if(viewKey==='pmp') renderPMP(); else renderRegistro();
+}
+
+function updateSortIndicator(viewKey){
+  const el2 = $('#'+viewKey+'SortIndicator');
+  if(!el2) return;
+  const so = state.tableSort[viewKey];
+  if(so){
+    el2.classList.add('active');
+    const lbl = colLabelForKey(viewKey, so.col);
+    $('#'+viewKey+'SortLabel').textContent = `Orden personalizado activo: ${lbl} (${so.dir==='asc'?'↑ A→Z':'↓ Z→A'})`;
+  } else {
+    el2.classList.remove('active');
+  }
+}
+
+function colLabelForKey(viewKey, colKey){
+  if(colKey==='__estado__') return 'Estado';
+  if(colKey.startsWith('mes:')) return MESES_FULL[colKey.slice(4)] || colKey.slice(4);
+  if(colKey.startsWith('reg:')){
+    const [,m,w] = colKey.split(':');
+    return `${MESES_FULL[m]} (${w})`;
+  }
+  return colKey;
+}
+
+function passesColFilters(viewKey, row){
+  const filters = state.tableFilters[viewKey];
+  for(const colKey of Object.keys(filters)){
+    const cs = filters[colKey];
+    if(!cs) continue;
+    const val = getRowValue(row, colKey);
+    if(cs.quickText){
+      if(!String(val).toLowerCase().includes(cs.quickText.toLowerCase())) return false;
+    }
+    if(cs.selectedValues){
+      const key = (val===''||val===null||val===undefined) ? '__EMPTY__' : String(val);
+      if(!cs.selectedValues.has(key)) return false;
+    }
+  }
+  return true;
+}
+
+function applySortAndFilter(viewKey, baseRows){
+  const so = state.tableSort[viewKey];
+  if(so){
+    // Hide family headers, sort equipos
+    const equipos = baseRows.filter(r=>!r.isHeader && passesColFilters(viewKey, r));
+    equipos.sort((a,b)=>{
+      const va = getRowValue(a, so.col);
+      const vb = getRowValue(b, so.col);
+      const na = parseFloat(va), nb = parseFloat(vb);
+      let cmp;
+      if(!isNaN(na) && !isNaN(nb) && /^-?\d+(\.\d+)?$/.test(String(va).trim()) && /^-?\d+(\.\d+)?$/.test(String(vb).trim())){
+        cmp = na - nb;
+      } else {
+        cmp = String(va).localeCompare(String(vb), 'es', {numeric:true});
+      }
+      return so.dir==='asc' ? cmp : -cmp;
+    });
+    return equipos;
+  }
+  // No sort: return rows preserving family headers (but only if some equipo in that family is visible)
+  const out = [];
+  let lastHeaderIdx = -1;
+  let famHasEquipos = false;
+  for(const r of baseRows){
+    if(r.isHeader){
+      if(lastHeaderIdx>=0 && !famHasEquipos){
+        out.splice(lastHeaderIdx, 1);
+      }
+      out.push(r);
+      lastHeaderIdx = out.length-1;
+      famHasEquipos = false;
+      continue;
+    }
+    if(!passesColFilters(viewKey, r)) continue;
+    out.push(r);
+    famHasEquipos = true;
+  }
+  if(lastHeaderIdx>=0 && !famHasEquipos){
+    out.splice(lastHeaderIdx, 1);
+  }
+  return out;
+}
+
+/* ============================================================
    RENDER PMP
    ============================================================ */
 function renderPMP(){
@@ -1134,6 +1586,7 @@ function renderPMP(){
     return;
   }
   const q = ($('#fPmpQ').value||'').toLowerCase().trim();
+  const eqSel = $('#fPmpEquipo').value;
   const fam = $('#fPmpFamilia').value;
   const mes = $('#fPmpMes').value;
   const cod = $('#fPmpCodigo').value;
@@ -1143,40 +1596,57 @@ function renderPMP(){
   const tbl = el('table', {class:'data'});
   const thead = el('thead');
   const tr = el('tr');
-  const cols = ['N° Carpeta','N° Inventario','Equipo','Servicio','Ubicación','Marca','Modelo','Frecuencia MP','Responsable MP','Estado',...MESES];
-  for(const c of cols){
-    const th = el('th', {class: c==='N° Inventario'?'col-sticky mono':(MESES.includes(c)?'center':'')}, c);
-    tr.appendChild(th);
+
+  const colDefs = [
+    {key:'N° Carpeta', label:'N° Carpeta', mono:true},
+    {key:'N° Inventario', label:'N° Inventario', sticky:true, mono:true},
+    {key:'Equipo', label:'Equipo'},
+    {key:'Servicio', label:'Servicio'},
+    {key:'Ubicación', label:'Ubicación'},
+    {key:'Marca', label:'Marca'},
+    {key:'Modelo', label:'Modelo'},
+    {key:'Frecuencia MP', label:'Frecuencia MP', center:true},
+    {key:'__estado__', label:'Estado'},
+  ];
+  for(const m of MESES) colDefs.push({key:'mes:'+m, label:m, center:true});
+
+  for(const c of colDefs){
+    tr.appendChild(buildFilterHeader('pmp', c.key, c.label, c));
   }
   thead.appendChild(tr);
   tbl.appendChild(thead);
 
-  const tbody = el('tbody');
-  let lastFam = null;
-  let count = 0;
-  for(const r of state.pmp){
-    if(r.isHeader){ lastFam = r.familia; continue; }
-    if(fam && r.familia!==fam) continue;
+  // Pre-filter base (search bar, family, eqSel, mes/cod, estado)
+  const base = state.pmp.filter(r=>{
+    if(r.isHeader) return true;
+    if(eqSel && r['N° Inventario']!==eqSel) return false;
+    if(fam && r.familia!==fam) return false;
     if(q){
       const hay = [r.Equipo, r['N° Inventario'], r.Serie, r.Ubicación, r.Marca, r.Modelo, r['N° Carpeta']].join(' ').toLowerCase();
-      if(!hay.includes(q)) continue;
+      if(!hay.includes(q)) return false;
     }
-    if(mes && cod && r.meses[mes]!==cod) continue;
-    if(mes && !cod && !r.meses[mes]) continue;
-    if(cod && !mes && !MESES.some(m=>r.meses[m]===cod)) continue;
+    if(mes && cod && r.meses[mes]!==cod) return false;
+    if(mes && !cod && !r.meses[mes]) return false;
+    if(cod && !mes && !MESES.some(m=>r.meses[m]===cod)) return false;
     if(est){
       const {estado} = getEstadoEquipo(r['N° Inventario']);
-      if(estado!==est) continue;
+      if(estado!==est) return false;
     }
+    return true;
+  });
 
-    // Family separator
-    if(r.familia && r.familia!==lastFam){
-      const fr = el('tr', {class:'family-row'});
-      fr.appendChild(el('td', {colspan: cols.length}, r.familia));
-      tbody.appendChild(fr);
+  const finalRows = applySortAndFilter('pmp', base);
+
+  const tbody = el('tbody');
+  let lastFam = null;
+  for(const r of finalRows){
+    if(r.isHeader){
       lastFam = r.familia;
+      const fr = el('tr', {class:'family-row'});
+      fr.appendChild(el('td', {colspan: colDefs.length}, r.familia));
+      tbody.appendChild(fr);
+      continue;
     }
-
     const row = el('tr');
     row.appendChild(el('td', {class:'mono'}, r['N° Carpeta']||''));
     row.appendChild(el('td', {class:'col-sticky mono'}, r['N° Inventario']||''));
@@ -1186,7 +1656,6 @@ function renderPMP(){
     row.appendChild(el('td', {}, r.Marca||''));
     row.appendChild(el('td', {}, r.Modelo||''));
     row.appendChild(el('td', {class:'center'}, r['Frecuencia MP']||''));
-    row.appendChild(el('td', {}, r['Responsable MP']||''));
     const tdEst = el('td');
     tdEst.appendChild(estadoBadge(r['N° Inventario']));
     row.appendChild(tdEst);
@@ -1201,7 +1670,6 @@ function renderPMP(){
       row.appendChild(td);
     }
     tbody.appendChild(row);
-    count++;
   }
   tbl.appendChild(tbody);
   wrap.appendChild(tbl);
@@ -1217,6 +1685,7 @@ function renderRegistro(){
     return;
   }
   const q = ($('#fRegQ').value||'').toLowerCase().trim();
+  const eqSel = $('#fRegEquipo').value;
   const fam = $('#fRegFamilia').value;
   const mes = $('#fRegMes').value;
 
@@ -1224,40 +1693,58 @@ function renderRegistro(){
   const tbl = el('table', {class:'data'});
   const thead = el('thead');
 
+  // first header row (with filters on base columns and one merged month label per month)
   const tr1 = el('tr');
-  const baseHeaders = ['N° Inventario','Equipo','Servicio','Ubicación','Estado'];
-  for(const h of baseHeaders) tr1.appendChild(el('th', {rowspan:2, class: h==='N° Inventario'?'col-sticky mono':''}, h));
-  for(const m of MESES) tr1.appendChild(el('th', {colspan:2, class:'center'}, MESES_FULL[m]));
+  const baseDefs = [
+    {key:'N° Inventario', label:'N° Inventario', sticky:true, mono:true},
+    {key:'Equipo', label:'Equipo'},
+    {key:'Servicio', label:'Servicio'},
+    {key:'Ubicación', label:'Ubicación'},
+    {key:'__estado__', label:'Estado'}
+  ];
+  for(const c of baseDefs){
+    tr1.appendChild(buildFilterHeader('reg', c.key, c.label, {...c, rowspan:2}));
+  }
+  for(const m of MESES){
+    tr1.appendChild(el('th', {colspan:2, class:'center'}, MESES_FULL[m]));
+  }
   thead.appendChild(tr1);
+
+  // second header row (P/R with filters)
   const tr2 = el('tr', {class:'row2'});
   for(const m of MESES){
-    tr2.appendChild(el('th', {class:'center'}, 'P'));
-    tr2.appendChild(el('th', {class:'center'}, 'R'));
+    tr2.appendChild(buildFilterHeader('reg', 'reg:'+m+':P', 'P', {center:true}));
+    tr2.appendChild(buildFilterHeader('reg', 'reg:'+m+':R', 'R', {center:true}));
   }
   thead.appendChild(tr2);
   tbl.appendChild(thead);
 
-  const tbody = el('tbody');
-  let lastFam = null;
-  for(const r of state.registro){
-    if(r.isHeader){ lastFam = r.familia; continue; }
-    if(fam && r.familia!==fam) continue;
+  const base = state.registro.filter(r=>{
+    if(r.isHeader) return true;
+    if(eqSel && r['N° Inventario']!==eqSel) return false;
+    if(fam && r.familia!==fam) return false;
     if(q){
       const hay = [r.Equipo, r['N° Inventario'], r.Ubicación].join(' ').toLowerCase();
-      if(!hay.includes(q)) continue;
+      if(!hay.includes(q)) return false;
     }
     if(mes){
       const cell = r.meses[mes]||{};
-      if(!cell.P && !cell.R) continue;
+      if(!cell.P && !cell.R) return false;
     }
+    return true;
+  });
 
-    if(r.familia && r.familia!==lastFam){
+  const finalRows = applySortAndFilter('reg', base);
+  const totalCols = baseDefs.length + MESES.length*2;
+
+  const tbody = el('tbody');
+  for(const r of finalRows){
+    if(r.isHeader){
       const fr = el('tr', {class:'family-row'});
-      fr.appendChild(el('td', {colspan: 5+MESES.length*2}, r.familia));
+      fr.appendChild(el('td', {colspan: totalCols}, r.familia));
       tbody.appendChild(fr);
-      lastFam = r.familia;
+      continue;
     }
-
     const row = el('tr');
     row.appendChild(el('td', {class:'col-sticky mono'}, r['N° Inventario']||''));
     row.appendChild(el('td', {}, r.Equipo||''));
@@ -1309,7 +1796,6 @@ $('#ecGuardar').addEventListener('click', ()=>{
   const eq = state.pmp.find(r=>!r.isHeader && r['N° Inventario']===inv);
   if(eq){
     eq.meses[mes] = val;
-    // espejo a registro P
     const reg = state.registro.find(r=>!r.isHeader && r['N° Inventario']===inv);
     if(reg){ reg.meses[mes].P = val; }
   }
@@ -1359,7 +1845,6 @@ $('#rrGuardar').addEventListener('click', ()=>{
   if(!reg || !eq){ closeModal('#modalRegResult'); return; }
   reg.meses[mes].R = val;
 
-  // Reprogramación
   if(['C1','C5','C6','C7','C8'].includes(val)){
     const destino = $('#rrReprogMes').value;
     if(destino){
@@ -1368,7 +1853,6 @@ $('#rrGuardar').addEventListener('click', ()=>{
     }
   }
 
-  // Baja: limpia meses posteriores
   if(val==='Baja'){
     const idx = MESES.indexOf(mes);
     for(let i=idx+1;i<12;i++){
@@ -1426,13 +1910,13 @@ $('#estQuitar').addEventListener('click', ()=>{
 });
 
 /* ============================================================
-   FILTROS PMP / REGISTRO
+   FILTROS PMP / REGISTRO (globales)
    ============================================================ */
-['#fPmpQ','#fPmpFamilia','#fPmpMes','#fPmpCodigo','#fPmpEstado'].forEach(s=>{
+['#fPmpQ','#fPmpEquipo','#fPmpFamilia','#fPmpMes','#fPmpCodigo','#fPmpEstado'].forEach(s=>{
   $(s).addEventListener('input', renderPMP);
   $(s).addEventListener('change', renderPMP);
 });
-['#fRegQ','#fRegFamilia','#fRegMes'].forEach(s=>{
+['#fRegQ','#fRegEquipo','#fRegFamilia','#fRegMes'].forEach(s=>{
   $(s).addEventListener('input', renderRegistro);
   $(s).addEventListener('change', renderRegistro);
 });
@@ -1456,7 +1940,6 @@ function generarPlantilla(){
     if(r.isHeader){ lastFam = r.familia; continue; }
     const cod = r.meses[mes];
     if(!['X','R','RA'].includes(cod)) continue;
-    // Excluir si FS/Baja/NU en meses anteriores
     const reg = state.registro.find(x=>!x.isHeader && x['N° Inventario']===r['N° Inventario']);
     if(reg){
       let excluido = false;
@@ -1475,6 +1958,8 @@ function generarPlantilla(){
     return;
   }
 
+  const asignMes = state.asignacionesMensuales[mes] || {};
+
   const tbl = el('table', {class:'data'});
   const thead = el('thead');
   const cols = ['N° Carpeta','N° Inventario','Equipo','Servicio','Unidad','Ubicación','Marca','Modelo','Serie','Año','Frecuencia MP','Programado en mes','Responsable'];
@@ -1484,7 +1969,6 @@ function generarPlantilla(){
   tbl.appendChild(thead);
 
   const tbody = el('tbody');
-  // agrupar por familia
   const byFam = {};
   for(const e of equipos){
     const k = e._fam || 'Sin familia';
@@ -1513,11 +1997,17 @@ function generarPlantilla(){
       row.appendChild(tdCod);
       const tdResp = el('td');
       const sel = el('select');
-      sel.innerHTML = '<option value="">(seleccionar)</option>' + EJECUTORES.map(x=>`<option ${x===e['Responsable MP']?'selected':''}>${x}</option>`).join('');
+      const prev = asignMes[e['N° Inventario']] || '';
+      sel.innerHTML = '<option value="">(seleccionar)</option>' + EJECUTORES.map(x=>`<option ${x===prev?'selected':''}>${x}</option>`).join('');
       sel.dataset.inv = e['N° Inventario'];
       sel.addEventListener('change', ev=>{
-        const eq = state.pmp.find(p=>!p.isHeader && p['N° Inventario']===ev.target.dataset.inv);
-        if(eq){ eq['Responsable MP'] = ev.target.value; scheduleAutosave(); }
+        if(!state.asignacionesMensuales[mes]) state.asignacionesMensuales[mes] = {};
+        if(ev.target.value){
+          state.asignacionesMensuales[mes][ev.target.dataset.inv] = ev.target.value;
+        } else {
+          delete state.asignacionesMensuales[mes][ev.target.dataset.inv];
+        }
+        scheduleAutosave();
       });
       tdResp.appendChild(sel);
       row.appendChild(tdResp);
@@ -1533,6 +2023,7 @@ function exportPlantilla(){
   const mes = $('#plMes').value;
   if(!state.pmp.length){ toast('No hay datos', 'error'); return; }
   const idxMes = MESES.indexOf(mes);
+  const asignMes = state.asignacionesMensuales[mes] || {};
   const rows = [['N° Carpeta','N° Inventario','Equipo','Servicio','Unidad','Ubicación','Marca','Modelo','Serie','Año','Frecuencia MP','Programado en mes','Responsable']];
   for(const r of state.pmp){
     if(r.isHeader) continue;
@@ -1550,7 +2041,7 @@ function exportPlantilla(){
     rows.push([
       r['N° Carpeta']||'', r['N° Inventario']||'', r.Equipo||'', r.Servicio||'', r.Unidad||'',
       r.Ubicación||'', r.Marca||'', r.Modelo||'', r.Serie||'', r['Año de Instalación']||'',
-      r['Frecuencia MP']||'', cod, r['Responsable MP']||''
+      r['Frecuencia MP']||'', cod, asignMes[r['N° Inventario']]||''
     ]);
   }
   if(rows.length<=1){ toast('No hay equipos para '+MESES_FULL[mes], 'error'); return; }
@@ -1660,10 +2151,10 @@ $('#evGuardar').addEventListener('click', ()=>{
     ev.estado = $('#repEstado').value;
     ev.obs = $('#repObs').value;
   }
-  if(state.editing.evIdx===null) state.events.push(ev);
+  const wasEdit = state.editing.evIdx!==null;
+  if(!wasEdit) state.events.push(ev);
   else { ev.id = state.events[state.editing.evIdx].id; state.events[state.editing.evIdx] = ev; }
 
-  // Espejo MP → registro
   if(t==='MP' && ev.fecha && ev.resultado){
     const d = new Date(ev.fecha);
     const m = MESES[d.getMonth()];
@@ -1675,13 +2166,12 @@ $('#evGuardar').addEventListener('click', ()=>{
   renderEventos(); renderPMP(); renderRegistro();
   scheduleAutosave();
 
-  // Auto-sugerencia de pendientes
-  if(state.editing.evIdx===null){
+  if(!wasEdit){
     if(t==='MP' && ev.resultado==='Si' && ev.estadoEquipo==='No operativo'){
       const eq = state.pmp.find(r=>!r.isHeader && r['N° Inventario']===inv);
       if(confirm(`MP realizada con equipo no operativo. ¿Crear pendiente de Reparación (prioridad Alta)?`)){
         const desc = `Equipo encontrado no operativo durante MP.\nFecha: ${ev.fecha}\nEjecutor: ${ev.ejecutor}\nObs: ${ev.obs||'(sin observación)'}`;
-        const p = nuevoPendiente({
+        nuevoPendiente({
           titulo: `Reparación tras MP — ${eq?eq.Equipo:inv}`,
           tipo: 'Reparación', prioridad: 'Alta',
           equipo: inv, responsable: ev.ejecutor||'', descripcion: desc, estado: 'Abierto'
@@ -1717,7 +2207,6 @@ $('#evEliminar').addEventListener('click', ()=>{
   toast('Evento eliminado', 'ok');
 });
 
-function evTipoCode(t){ return t; }
 function evTipoBadge(t){
   return el('span', {class:'badge ev-'+t}, t);
 }
@@ -1810,6 +2299,8 @@ function openPendienteModal(idx){
     $('#penEstadoIn').value = 'Abierto';
     $('#penCreadoIn').value = new Date().toLocaleString('es-CL');
     $('#penDescIn').value = '';
+    state._tmpTimeline = [];
+    state._tmpFiles = [];
     renderTimeline([]);
     renderFiles([]);
   } else {
@@ -1847,12 +2338,6 @@ function renderTimeline(items){
     div.appendChild(el('div', {class:'timeline-body'}, it.texto||''));
     tl.appendChild(div);
   }
-}
-
-function getCurrentTimeline(){
-  const idx = state.editing.penIdx;
-  if(idx===null) return state._tmpTimeline = state._tmpTimeline || [];
-  return state.pendientes[idx].timeline = state.pendientes[idx].timeline || [];
 }
 
 $('#penBtnAddAccion').addEventListener('click', addAccion);
@@ -1932,7 +2417,7 @@ $('#penGuardar').addEventListener('click', ()=>{
     descripcion: $('#penDescIn').value,
   };
   if(state.editing.penIdx===null){
-    const p = nuevoPendiente({
+    nuevoPendiente({
       ...data,
       timeline: state._tmpTimeline||[],
       files: state._tmpFiles||[]
@@ -2088,7 +2573,7 @@ function exportXLSX(){
   if(!state.pmp.length){ toast('No hay datos para exportar', 'error'); return; }
   const wb = XLSX.utils.book_new();
 
-  // PMP_2026
+  // PMP_2026 — sin Observación ni Responsable MP
   const pmpRows = [[...COL_BASE, ...MESES, 'Estado actual', 'Override manual']];
   for(const r of state.pmp){
     if(r.isHeader){
@@ -2129,7 +2614,6 @@ function exportXLSX(){
     regRows.push([...baseVals, ...mesVals]);
   }
   const wsReg = XLSX.utils.aoa_to_sheet(regRows);
-  // Merges para meses en h1
   wsReg['!merges'] = wsReg['!merges'] || [];
   for(let i=0;i<MESES.length;i++){
     const startCol = COL_BASE.length + i*2;
@@ -2168,7 +2652,6 @@ function exportXLSX(){
     }
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(penRows), 'Pendientes');
 
-    // Acciones
     const accRows = [['Pendiente ID','Título','Equipo','Fecha acción','Autor','Acción']];
     let hasAcc = false;
     for(const p of state.pendientes){
@@ -2193,7 +2676,8 @@ $('#btnGuardarSesion').addEventListener('click', ()=>{
     version:1, savedAt:nowISO(),
     fileName: state.fileName,
     pmp: state.pmp, registro: state.registro,
-    events: state.events, pendientes: state.pendientes
+    events: state.events, pendientes: state.pendientes,
+    asignacionesMensuales: state.asignacionesMensuales
   };
   const blob = new Blob([JSON.stringify(snap, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
@@ -2222,8 +2706,12 @@ $('#sesionInput').addEventListener('change', async e=>{
     state.registro = snap.registro || [];
     state.events = snap.events || [];
     state.pendientes = snap.pendientes || [];
+    state.asignacionesMensuales = snap.asignacionesMensuales || {};
+    state.tableFilters = { pmp:{}, reg:{} };
+    state.tableSort = { pmp:null, reg:null };
     populateSelectors();
     updateStatus();
+    updateSortIndicator('pmp'); updateSortIndicator('reg');
     renderPMP(); renderRegistro(); renderEventos(); renderPendientes();
     scheduleAutosave();
     toast('Sesión cargada', 'ok');
